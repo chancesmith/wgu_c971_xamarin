@@ -1,10 +1,10 @@
 ﻿using System;
 using SQLite;
 
-namespace C971_WGU.Assessment
+namespace wguterms.Assessment
 {
     [Table("Assessments")]
-    internal class Assessment
+    public class Assessment
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }

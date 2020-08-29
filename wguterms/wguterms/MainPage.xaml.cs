@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace C971_WGU
+namespace wguterms
 {
     public partial class MainPage : ContentPage
     {
