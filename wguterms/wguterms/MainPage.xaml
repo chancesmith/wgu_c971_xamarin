@@ -8,26 +8,5 @@
                FontSize="30"
                FontAttributes="Bold"
                HorizontalOptions="Center" />
-
-        <!--<ListView x:Name="termsListView">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal"
-                                     HorizontalOptions="Center">
-                            <Label Text="{Binding TermName}"
-                                   VerticalOptions="Center"
-                                   TextColor="Black" />
-                            <Label Text="{Binding Start,StringFormat='{}{0:MM/dd/yyyy}'}"
-                                   VerticalOptions="Center"
-                                   TextColor="Black" />
-                            <Label Text="{Binding End,StringFormat='{}{0:MM/dd/yyyy}'}"
-                                   VerticalOptions="Center"
-                                   TextColor="Black" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
     </StackLayout>
 </ContentPage>
