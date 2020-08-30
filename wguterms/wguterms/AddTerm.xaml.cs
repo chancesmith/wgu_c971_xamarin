@@ -45,7 +45,8 @@ namespace wguterms
             }
             else
             {
-                await Navigation.PushModalAsync(new InputError());
+                //await Navigation.PushModalAsync(new InputError());
+                await DisplayAlert("Alert", "All fields must be filled out. Email addresses must be valid. Start Date must be earlier than End Date.  Please try again.", "OK");
             }
 
         }

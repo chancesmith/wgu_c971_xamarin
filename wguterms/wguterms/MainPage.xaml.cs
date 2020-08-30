@@ -167,11 +167,10 @@ namespace wguterms
             await Navigation.PushModalAsync(new AddTerm(this));
         }
 
-        //async
-        void ItemTapped(object sender, ItemTappedEventArgs e)
+        async void ItemTapped(object sender, ItemTappedEventArgs e)
         {
             Term term = (Term)e.Item;
-            //await Navigation.PushAsync(new TermPage(term, main));
+            await Navigation.PushAsync(new TermPage(term, main));
         }
     }
 }
