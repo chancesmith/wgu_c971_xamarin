@@ -1,7 +1,7 @@
 ﻿using System;
 using SQLite;
 
-namespace wguterms.Term
+namespace wguterms.Classes
 {
     [Table("Terms")]
     public class Term
