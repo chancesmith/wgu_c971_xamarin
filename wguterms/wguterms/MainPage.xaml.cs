@@ -110,8 +110,8 @@ namespace wguterms
         }
         private void CreateEvaluationData(int termNumber)
         {
-            ////                          EVALUATION DATA CREATION
-            ////       ----SAMPLE TERM----
+            //// EVALUATION DATA CREATION
+            //// SEED TERM----
             Term newTerm = new Term();
             newTerm.TermName = "Term " + termNumber.ToString();
             newTerm.Start = new DateTime(2020, 03, 14);
@@ -120,7 +120,7 @@ namespace wguterms
             {
                 con.Insert(newTerm);
             }
-            ////       ----SAMPLE COURSE----
+            //// SEED COURSE----
             Course newCourse = new Course();
             newCourse.Term = newTerm.Id;
             newCourse.CourseName = "Intro To Theoretical Physics";
@@ -136,7 +136,7 @@ namespace wguterms
             {
                 con.Insert(newCourse);
             }
-            ////       ----SAMPLE OBJECTIVE ASSESSMENT----
+            //// SEED OBJECTIVE ASSESSMENT----
             Assessment newObjectiveAssessment = new Assessment();
             newObjectiveAssessment.AssessmentName = "BOP1";
             newObjectiveAssessment.Start = new DateTime(2020, 04, 11);
@@ -148,7 +148,7 @@ namespace wguterms
             {
                 con.Insert(newObjectiveAssessment);
             }
-            ////       ----SAMPLE PERFORMANCE ASSESSMENT----
+            //// SEED PERFORMANCE ASSESSMENT----
             Assessment newPerformanceAssessment = new Assessment();
             newPerformanceAssessment.AssessmentName = "LAG1";
             newPerformanceAssessment.Start = new DateTime(2020, 06, 11);
@@ -162,10 +162,9 @@ namespace wguterms
             }
         }
 
-        //async
-        private void btnNewTerm_Clicked(object sender, EventArgs e)
+        async private void btnNewTerm_Clicked(object sender, EventArgs e)
         {
-            //await Navigation.PushModalAsync(new AddTerm(this));
+            await Navigation.PushModalAsync(new AddTerm(this));
         }
 
         //async

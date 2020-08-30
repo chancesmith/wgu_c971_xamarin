@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="wguterms.InputError">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="All fields must be filled out. Also, all email addresses must be valid. Start Date must be earlier than End Date.  Please try again."
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Button Text="OK" 
+                x:Name="btnOK"
+                Clicked="btnOK_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
