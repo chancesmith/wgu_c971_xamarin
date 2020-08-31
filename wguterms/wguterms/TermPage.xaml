@@ -12,6 +12,10 @@
                 <Label x:Name="termStart" HorizontalOptions="Center"/>
                 <Label x:Name="termEnd" HorizontalOptions="Center"/>
 
+                <Label Text="Courses"
+                    VerticalOptions="CenterAndExpand" 
+                    HorizontalOptions="CenterAndExpand" />
+
                 <ListView x:Name="coursesListView">
                     <ListView.ItemTemplate>
                         <DataTemplate>

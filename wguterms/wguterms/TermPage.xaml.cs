@@ -73,8 +73,8 @@ namespace wguterms
 
         async void ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //Course course = (Course)e.Item;
-            //await Navigation.PushAsync(new CoursePage(_term, _main, course));
+            Course course = (Course)e.Item;
+            await Navigation.PushAsync(new CoursePage(_term, _main, course));
         }
 
         private async void btnDeleteTerm_Clicked(object sender, EventArgs e)
