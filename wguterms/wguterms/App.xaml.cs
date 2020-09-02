@@ -12,14 +12,22 @@ namespace wguterms
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new MainPage())
+            {
+                BarBackgroundColor = Color.FromHex("#444"),
+                BarTextColor = Color.White,
+            };
         }
 
         public App(string filePath)
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new MainPage())
+            {
+                BarBackgroundColor = Color.FromHex("#444"),
+                BarTextColor = Color.White,
+            };
             FilePath = filePath;
         }
 

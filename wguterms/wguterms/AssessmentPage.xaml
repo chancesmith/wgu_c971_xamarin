@@ -15,6 +15,8 @@
                         <DataTemplate>
                             <ViewCell IsEnabled="True">
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                    <Label Text="{Binding AssessType}" VerticalOptions="Center" TextColor="Black"/>
+                                    <Label Text=":" VerticalOptions="Center" TextColor="Black"/>
                                     <Label Text="{Binding AssessmentName}" VerticalOptions="Center" TextColor="Black"/>
                                 </StackLayout>
                             </ViewCell>
