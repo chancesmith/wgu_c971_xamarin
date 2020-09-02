@@ -149,21 +149,18 @@ namespace wguterms
 
         private async void btnDeleteCourse_Clicked(object sender, EventArgs e)
         {
-            // Before deleting course, you need to make sure to
-            // delete the assessments associated with this course
-
-
+            // delete assessments, then delete course
             var result = await this.DisplayAlert("Alert!", "Do you really want to delete this course?", "Yes", "No");
             if (result)
             {
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    var assessments = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}'");
-                    foreach (Assessment a in assessments)
+                    var assessments = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}'");
+                    foreach (Assessment assessment in assessments)
                     {
-                        con.Delete(a);
+                        conn.Delete(assessment);
                     }
-                    con.Delete(_course);
+                    conn.Delete(_course);
                     // PopToRootAsync() can send user to MainPage() if user testing
                     //shows that this is preferred
 
