@@ -89,7 +89,7 @@ namespace wguterms
 
         private void btnViewAssessments_Clicked(object sender, EventArgs e)
         {
-            //Navigation.PushAsync(new AssessmentPage(_course, _main));
+            Navigation.PushAsync(new AssessmentPage(_course, _main));
         }
 
         public async Task ShareNotes()

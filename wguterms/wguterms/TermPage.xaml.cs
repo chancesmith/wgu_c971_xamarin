@@ -1,10 +1,6 @@
 ﻿using wguterms.Classes;
 using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -47,7 +43,7 @@ namespace wguterms
         async private void btnAddCourse_Clicked(object sender, EventArgs e)
         {
             // Only allow 6 courses per term
-            if (GetCourseCount() < 0)
+            if (GetCourseCount() < 6)
             {
                 //await Navigation.PushModalAsync(new AddCourse(_term, _main));
             }

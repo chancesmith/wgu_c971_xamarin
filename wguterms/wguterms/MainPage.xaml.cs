@@ -83,18 +83,18 @@ namespace wguterms
                     var courses = con.Query<Course>($"SELECT * FROM Courses WHERE Term = '{t.Id}'");
                     foreach (Course c in courses)
                     {
-                        // Check for courses starting within 3 days
+                        // check for courses starting within 3 days
                         if ((c.Start - DateTime.Now).TotalDays < 3 && c.GetNotified == 1)
                         {
                             CrossLocalNotifications.Current.Show("Course Starting Soon", $"{c.CourseName} is starting on {c.Start.Date.ToString()}");
                         }
-                        // Check for courses ending within 7 days
+                        // check for courses ending within 7 days
                         if ((c.End - DateTime.Now).TotalDays < 7 && c.GetNotified == 1)
                         {
                             CrossLocalNotifications.Current.Show("Course Ending Soon", $"{c.CourseName} is ending on {c.End.Date.ToString()}");
                         }
 
-                        //Check for assessments that are coming up within 3 days
+                        // check for assessments that are coming up within 3 days
                         var assessments = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{c.Id}'");
                         foreach (Assessment a in assessments)
                         {
@@ -114,51 +114,54 @@ namespace wguterms
             //// SEED TERM----
             Term newTerm = new Term();
             newTerm.TermName = "Term " + termNumber.ToString();
-            newTerm.Start = new DateTime(2020, 03, 14);
-            newTerm.End = new DateTime(2020, 09, 14);
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            newTerm.Start = new DateTime(2020, 09, 15);
+            newTerm.End = new DateTime(2020, 12, 15);
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                con.Insert(newTerm);
+                conn.Insert(newTerm);
             }
+
             //// SEED COURSE----
             Course newCourse = new Course();
             newCourse.Term = newTerm.Id;
-            newCourse.CourseName = "Intro To Theoretical Physics";
+            newCourse.CourseName = "Intro To Programming";
             newCourse.CourseStatus = "Plan To Take";
-            newCourse.Start = new DateTime(2020, 03, 23);
-            newCourse.End = new DateTime(2020, 06, 11);
-            newCourse.InstructorName = "David Potesta";
-            newCourse.InstructorEmail = "dpotest@wgu.edu";
-            newCourse.InstructorPhone = "414-768-3782";
-            newCourse.Notes = "Hurry Up";
+            newCourse.Start = new DateTime(2020, 09, 23);
+            newCourse.End = new DateTime(2020, 10, 10);
+            newCourse.InstructorName = "john Smith";
+            newCourse.InstructorEmail = "jsmith@wgu.edu";
+            newCourse.InstructorPhone = "777-555-1234";
+            newCourse.Notes = "So close to the end.";
             newCourse.GetNotified = 1;
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                con.Insert(newCourse);
+                conn.Insert(newCourse);
             }
+
             //// SEED OBJECTIVE ASSESSMENT----
             Assessment newObjectiveAssessment = new Assessment();
-            newObjectiveAssessment.AssessmentName = "BOP1";
-            newObjectiveAssessment.Start = new DateTime(2020, 04, 11);
-            newObjectiveAssessment.End = new DateTime(2020, 04, 11);
+            newObjectiveAssessment.AssessmentName = "FOO1";
+            newObjectiveAssessment.Start = new DateTime(2020, 09, 11);
+            newObjectiveAssessment.End = new DateTime(2020, 09, 11);
             newObjectiveAssessment.AssessType = "Objective";
             newObjectiveAssessment.Course = newCourse.Id;
             newObjectiveAssessment.GetNotified = 0;
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                con.Insert(newObjectiveAssessment);
+                conn.Insert(newObjectiveAssessment);
             }
+
             //// SEED PERFORMANCE ASSESSMENT----
             Assessment newPerformanceAssessment = new Assessment();
-            newPerformanceAssessment.AssessmentName = "LAG1";
-            newPerformanceAssessment.Start = new DateTime(2020, 06, 11);
-            newPerformanceAssessment.End = new DateTime(2020, 06, 11);
+            newPerformanceAssessment.AssessmentName = "BAR2";
+            newPerformanceAssessment.Start = new DateTime(2020, 09, 11);
+            newPerformanceAssessment.End = new DateTime(2020, 09, 11);
             newPerformanceAssessment.AssessType = "Performance";
             newPerformanceAssessment.Course = newCourse.Id;
             newPerformanceAssessment.GetNotified = 0;
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                con.Insert(newPerformanceAssessment);
+                conn.Insert(newPerformanceAssessment);
             }
         }
 
