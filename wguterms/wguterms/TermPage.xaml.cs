@@ -45,7 +45,7 @@ namespace wguterms
             // Only allow 6 courses per term
             if (GetCourseCount() < 6)
             {
-                //await Navigation.PushModalAsync(new AddCourse(_term, _main));
+                await Navigation.PushModalAsync(new AddCourse(_term, _main));
             }
             else
             {
@@ -103,7 +103,7 @@ namespace wguterms
 
         private async void btnEditTerm_Clicked(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new EditTermPage(_term, _main));
+            await Navigation.PushAsync(new EditTermPage(_term, _main));
         }
     }
 }

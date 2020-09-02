@@ -35,7 +35,7 @@ namespace wguterms
         async void ItemTapped(object sender, ItemTappedEventArgs e)
         {
             Assessment assessment = (Assessment)e.Item;
-            //await Navigation.PushAsync(new EditAssessmentPage(_course, _main, assessment));
+            await Navigation.PushAsync(new EditAssessmentPage(_course, _main, assessment));
         }
 
         async private void btnNewAssessment_Clicked(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace wguterms
             // The Add\Edit pages will make sure that there will not be 2 of a single type (Performance or Objective)
             if (getAssessmentCount() < 2)
             {
-                //await Navigation.PushModalAsync(new AddAssessment(_course, _main));
+                await Navigation.PushModalAsync(new AddAssessmentPage(_course, _main));
             }
             else
             {
