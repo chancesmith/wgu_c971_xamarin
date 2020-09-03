@@ -107,7 +107,7 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="7*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="Get Notified:" FontAttributes="Bold" Grid.Column="0" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                    <Label Text="Notifications:" FontAttributes="Bold" Grid.Column="0" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
                     <Picker Grid.Column="1" Title="Notifications:" x:Name="pickerNotifications">
                         <Picker.Items>
                             <x:String>No</x:String>
