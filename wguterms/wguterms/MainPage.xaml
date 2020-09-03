@@ -1,14 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="wguterms.MainPage">
+             x:Class="wguterms.MainPage" Title="WGU" >
 
     <StackLayout>
-        <Label Text="WGU"
-               FontSize="30"
-               FontAttributes="Bold"
-               HorizontalOptions="Center" />
-
         <Button Text="Add Term" Clicked="btnNewTerm_Clicked"/>
 
         <ListView x:Name="termsListView">
