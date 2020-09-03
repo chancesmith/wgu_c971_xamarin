@@ -36,6 +36,7 @@
                     Clicked="btnEditTerm_Clicked"/>
                 <Button Text="Delete This Term" 
                     x:Name="btnDeleteTerm"
+                    BackgroundColor="Crimson"
                     Clicked="btnDeleteTerm_Clicked"/>
             </StackLayout>
         </StackLayout>

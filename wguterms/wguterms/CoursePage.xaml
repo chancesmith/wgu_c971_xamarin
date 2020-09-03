@@ -3,6 +3,10 @@
     <ContentPage.Content>
     <ScrollView>
         <StackLayout VerticalOptions="CenterAndExpand">
+            <Button Text="View Assessments" 
+                    x:Name="btnViewAssessments"
+                    HeightRequest="40"
+                    Clicked="btnViewAssessments_Clicked"/>
             <Grid Margin="6" RowSpacing="5">
 
                 <Grid.RowDefinitions>
@@ -121,14 +125,10 @@
                     x:Name="btnEditCourse"
                     HeightRequest="40"
                     Clicked="btnEditCourse_Clicked"/>
-                <Button Text="Assessments" 
-                    x:Name="btnViewAssessments"
-                    HeightRequest="40"
-                    Clicked="btnViewAssessments_Clicked"/>
                 <Button Text="Delete" 
                     x:Name="btnDeleteCourse"
                     HeightRequest="40"
-                    BackgroundColor="Red"
+                    BackgroundColor="Crimson"
                     Clicked="btnDeleteCourse_Clicked"/>
             </StackLayout>
         </ScrollView>
