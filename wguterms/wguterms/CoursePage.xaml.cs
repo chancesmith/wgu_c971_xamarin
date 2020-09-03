@@ -1,9 +1,11 @@
 ﻿using wguterms.Classes;
 using SQLite;
+
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Threading.Tasks;
+
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

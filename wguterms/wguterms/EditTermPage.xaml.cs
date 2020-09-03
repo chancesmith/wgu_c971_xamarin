@@ -4,6 +4,7 @@ using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+
 namespace wguterms
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]

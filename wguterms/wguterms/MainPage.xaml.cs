@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-using wguterms.Classes;
+﻿using wguterms.Classes;
 using SQLite;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Xamarin.Forms;
+
 using Plugin.LocalNotifications;
 
 namespace wguterms
@@ -53,7 +53,6 @@ namespace wguterms
                     conn.CreateTable<Assessment>();
 
                     SeedAppWithData(1);
-                    SeedAppWithData(2);
                 }
                 isInitRound = false;
                 RunAlerts();
@@ -62,7 +61,6 @@ namespace wguterms
             {
 
                 SeedAppWithData(1);
-                SeedAppWithData(2);
 
                 isInitRound = false;
                 RunAlerts();
@@ -130,7 +128,7 @@ namespace wguterms
             newCourse.CourseStatus = "Plan To Take";
             newCourse.Start = new DateTime(2020, 09, 23);
             newCourse.End = new DateTime(2020, 10, 10);
-            newCourse.InstructorName = "john Smith";
+            newCourse.InstructorName = "Sohn Smith";
             newCourse.InstructorEmail = "jsmith@wgu.edu";
             newCourse.InstructorPhone = "777-555-1234";
             newCourse.Notes = "So close to the end.";
