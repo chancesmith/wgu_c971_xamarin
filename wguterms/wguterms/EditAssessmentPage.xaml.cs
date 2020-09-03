@@ -52,32 +52,37 @@ namespace wguterms
             {
                 changedAssessmentType = true;
             }
+
             _assessment.AssessmentName = txtAssessmentName.Text;
             _assessment.End = dpDueDate.Date;
             _assessment.GetNotified = pickerNotifications.SelectedIndex;
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
-            {
-                var objectiveCount = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Objective'");
-                var performanceCount = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Performance'");
 
-                if (_assessment.AssessType.ToString() == "Objective" && objectiveCount.Count == 0)
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
+            {
+                var objectiveCount = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Objective'");
+                var performanceCount = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Performance'");
+
+                var isAssemntPerformance = _assessment.AssessType.ToString() == "Performance";
+                var isAssemntObjective = _assessment.AssessType.ToString() == "Objective";
+
+                if (isAssemntObjective && objectiveCount.Count == 0)
                 {
                     _assessment.AssessType = pickerAssessmentType.SelectedItem.ToString();
-                    con.Update(_assessment);
+                    conn.Update(_assessment);
                     await Navigation.PopAsync();
                 }
-                else if (_assessment.AssessType.ToString() == "Performance" && performanceCount.Count == 0)
+                else if (isAssemntPerformance && performanceCount.Count == 0)
                 {
                     _assessment.AssessType = pickerAssessmentType.SelectedItem.ToString();
-                    con.Update(_assessment);
+                    conn.Update(_assessment);
                     await Navigation.PopAsync();
                 }
-                else if (((_assessment.AssessType.ToString() == "Performance" && performanceCount.Count == 1) ||
-                         (_assessment.AssessType.ToString() == "Objective" && objectiveCount.Count == 1)) &&
+                else if (((isAssemntPerformance  && performanceCount.Count == 1) ||
+                         (isAssemntObjective && objectiveCount.Count == 1)) &&
                          !(String.IsNullOrEmpty(_assessment.Id.ToString())) &&
                           !changedAssessmentType)
                 {
-                    con.Update(_assessment);
+                    conn.Update(_assessment);
                     await Navigation.PopAsync();
                 }
                 else
@@ -92,19 +97,13 @@ namespace wguterms
 
         private async void btnDeleteAssess_Clicked(object sender, EventArgs e)
         {
-            // Delete an assessment
-
-
+            // delete an assessment
             var result = await this.DisplayAlert("Alert!", "Do you really want to delete this assessment?", "Yes", "No");
             if (result)
             {
                 using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
                     conn.Delete(_assessment);
-                    // PopToRootAsync() can send user to MainPage() if user testing
-                    //shows that this is preferred
-
-                    //await Navigation.PopToRootAsync();
                     await Navigation.PopAsync();
                 }
 

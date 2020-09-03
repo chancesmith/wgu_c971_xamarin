@@ -26,15 +26,16 @@ namespace wguterms
 
         private async void btnSaveChanges_Clicked(object sender, EventArgs e)
         {
-            if (ValidateUserInput())
+            if (isInputValid())
             {
 
                 _term.TermName = txtTermTitle.Text;
                 _term.Start = dpStartDate.Date;
                 _term.End = dpEndDate.Date;
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    con.Update(_term);
+                    conn.Update(_term);
                     await Navigation.PopToRootAsync();
                 }
             }
@@ -44,7 +45,7 @@ namespace wguterms
             }
 
         }
-        private bool ValidateUserInput()
+        private bool isInputValid()
         {
             bool valid = true;
 

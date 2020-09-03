@@ -51,7 +51,7 @@ namespace wguterms
 
         private async void btnEditCourse_Clicked(object sender, EventArgs e)
         {
-            if (ValidateUserInput())
+            if (IsUserInputValid())
             {
                 _course.CourseName = txtCourseTitle.Text;
                 _course.CourseStatus = pickerCourseStatus.SelectedItem.ToString();
@@ -63,15 +63,9 @@ namespace wguterms
                 _course.Notes = txtNotes.Text;
                 _course.GetNotified = pickerNotifications.SelectedIndex;
                 _course.Term = _term.Id;
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    con.Update(_course);
-
-                    // Maybe don't have to update termListView if OnAppearing() gets called when this modal 
-                    // is dismissed.....yes we do lol, even though documentation says that OnAppearing() gets
-                    // called when modal is dismissed.  bug? 
-                    //https://forums.xamarin.com/discussion/58606/onappearing-not-called-on-android-for-underneath-page-if-page-on-top-was-pushed-modal
-                    //_main.courses.Remove( Add(newCourse);
+                    conn.Update(_course);
                     await Navigation.PopAsync();
                 }
             }
@@ -80,6 +74,20 @@ namespace wguterms
                 await Navigation.PushModalAsync(new InputError());
             }
 
+        }
+
+        public async Task ShareCourseNotes()
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Text = txtNotes.Text,
+                Title = "Share Course Notes"
+            });
+        }
+
+        private async void btnShareNotes_Clicked(object sender, EventArgs e)
+        {
+            await ShareCourseNotes();
         }
 
         private void btnDiscardChanges_Clicked(object sender, EventArgs e)
@@ -92,21 +100,7 @@ namespace wguterms
             Navigation.PushAsync(new AssessmentPage(_course, _main));
         }
 
-        public async Task ShareNotes()
-        {
-            await Share.RequestAsync(new ShareTextRequest
-            {
-                Text = txtNotes.Text,
-                Title = "Share Notes"
-            });
-        }
-
-        private async void btnShareNotes_Clicked(object sender, EventArgs e)
-        {
-            await ShareNotes();
-        }
-
-        private bool ValidateUserInput()
+        private bool IsUserInputValid()
         {
             bool valid = true;
 
@@ -127,13 +121,13 @@ namespace wguterms
 
             if (txtInstructorEmail.Text != null)
             {
-                valid = ValidateEmail(txtInstructorEmail.Text);
+                valid = IsEmailValid(txtInstructorEmail.Text);
             }
 
 
             return valid;
         }
-        private bool ValidateEmail(string email)
+        private bool IsEmailValid(string email)
         {
             try
             {
@@ -150,21 +144,19 @@ namespace wguterms
         private async void btnDeleteCourse_Clicked(object sender, EventArgs e)
         {
             // delete assessments, then delete course
-            var result = await this.DisplayAlert("Alert!", "Do you really want to delete this course?", "Yes", "No");
+            var result = await this.DisplayAlert("Alert!", "Do you really want to delete this course?", "Yes", "Cancel");
             if (result)
             {
                 using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
                     var assessments = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}'");
+
                     foreach (Assessment assessment in assessments)
                     {
                         conn.Delete(assessment);
                     }
                     conn.Delete(_course);
-                    // PopToRootAsync() can send user to MainPage() if user testing
-                    //shows that this is preferred
 
-                    //await Navigation.PopToRootAsync();
                     await Navigation.PopAsync();
                 }
 

@@ -1,10 +1,6 @@
 ﻿using wguterms.Classes;
 using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -23,34 +19,28 @@ namespace wguterms
 
         private async void btnSave_Clicked(object sender, EventArgs e)
         {
-            if (ValidateUserInput())
+            if (IsUserInputValid())
             {
-
-
                 Term newTerm = new Term();
+
                 newTerm.TermName = txtTermTitle.Text;
                 newTerm.Start = dpStartDate.Date;
                 newTerm.End = dpEndDate.Date;
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
-                {
-                    con.Insert(newTerm);
 
-                    // Maybe don't have to update termListView if OnAppearing() gets called when this modal 
-                    // is dismissed.....yes we do lol, even though documentation says that OnAppearing() gets
-                    // called when modal is dismissed.  bug? 
-                    //https://forums.xamarin.com/discussion/58606/onappearing-not-called-on-android-for-underneath-page-if-page-on-top-was-pushed-modal
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
+                {
+                    conn.Insert(newTerm);
                     mainPage.terms.Add(newTerm);
                     await Navigation.PopModalAsync();
                 }
             }
             else
             {
-                //await Navigation.PushModalAsync(new InputError());
                 await DisplayAlert("Alert", "All fields must be filled out. Email addresses must be valid. Start Date must be earlier than End Date.  Please try again.", "OK");
             }
 
         }
-        private bool ValidateUserInput()
+        private bool IsUserInputValid()
         {
             bool valid = true;
 

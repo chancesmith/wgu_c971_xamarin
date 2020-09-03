@@ -32,25 +32,23 @@ namespace wguterms
         {
             termStart.Text = _term.Start.ToString("MM/dd/yyyy");
             termEnd.Text = _term.End.ToString("MM/dd/yyyy");
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                con.CreateTable<Course>();
-                var coursesForTerm = con.Query<Course>($"SELECT * FROM Courses WHERE Term = '{_term.Id}'");
+                conn.CreateTable<Course>();
+                var coursesForTerm = conn.Query<Course>($"SELECT * FROM Courses WHERE Term = '{_term.Id}'");
                 coursesListView.ItemsSource = coursesForTerm;
             }
         }
 
         async private void btnAddCourse_Clicked(object sender, EventArgs e)
         {
-            // Only allow 6 courses per term
+            // only 6 courses per/term
             if (GetCourseCount() < 6)
             {
                 await Navigation.PushModalAsync(new AddCourse(_term, _main));
             }
             else
             {
-                // modal windows saying "can't add more than 6 courses"
-                //await Navigation.PushModalAsync(new CourseMaximumError());
                 await DisplayAlert("Alert", "Can't add more than 6 courses", "OK");
             }
         }
@@ -58,9 +56,9 @@ namespace wguterms
         int GetCourseCount()
         {
             int count = 0;
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                var courseCount = con.Query<Course>($"SELECT * FROM Courses WHERE Term = '{_term.Id}'");
+                var courseCount = conn.Query<Course>($"SELECT * FROM Courses WHERE Term = '{_term.Id}'");
                 count = courseCount.Count;
             }
 
@@ -75,26 +73,23 @@ namespace wguterms
 
         private async void btnDeleteTerm_Clicked(object sender, EventArgs e)
         {
-            // Before deleting term, you need to make sure to
-            // delete the courses (and their assessments) associated with this term
-
-
+            // delete assessments, then course
             var result = await DisplayAlert("Alert!", "Ready to delete this term?", "Yes", "No");
             if (result)
             {
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    var courses = con.Query<Course>($"SELECT * FROM Courses WHERE Term = '{_term.Id}'");
+                    var courses = conn.Query<Course>($"SELECT * FROM Courses WHERE Term = '{_term.Id}'");
                     foreach (Course course in courses)
                     {
-                        var assessments = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{course.Id}'");
+                        var assessments = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{course.Id}'");
                         foreach (Assessment a in assessments)
                         {
-                            con.Delete(a);
+                            conn.Delete(a);
                         }
-                        con.Delete(course);
+                        conn.Delete(course);
                     }
-                    con.Delete(_term);
+                    conn.Delete(_term);
                     await Navigation.PopToRootAsync();
                 }
 

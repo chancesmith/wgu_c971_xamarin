@@ -31,10 +31,11 @@ namespace wguterms
 
         private async void btnSave_Clicked(object sender, EventArgs e)
         {
-            if (ValidateUserInput())
+            if (IsUserInputValid())
             {
 
                 Course newCourse = new Course();
+
                 newCourse.CourseName = txtCourseTitle.Text;
                 newCourse.CourseStatus = pickerCourseStatus.SelectedItem.ToString();
                 newCourse.Start = dpStartDate.Date;
@@ -46,16 +47,9 @@ namespace wguterms
                 newCourse.GetNotified = pickerNotifications.SelectedIndex;
                 newCourse.Term = termPage.Id;
 
-
-
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    con.Insert(newCourse);
-
-                    // Maybe don't have to update termListView if OnAppearing() gets called when this modal 
-                    // is dismissed.....yes we do lol, even though documentation says that OnAppearing() gets
-                    // called when modal is dismissed.  bug? 
-                    //https://forums.xamarin.com/discussion/58606/onappearing-not-called-on-android-for-underneath-page-if-page-on-top-was-pushed-modal
+                    conn.Insert(newCourse);
                     mainPage.courses.Add(newCourse);
                     await Navigation.PopModalAsync();
                 }
@@ -72,7 +66,7 @@ namespace wguterms
             Navigation.PopModalAsync();
         }
 
-        private bool ValidateUserInput()
+        private bool IsUserInputValid()
         {
             bool valid = true;
 
@@ -93,13 +87,13 @@ namespace wguterms
 
             if (txtInstructorEmail.Text != null)
             {
-                valid = ValidateEmail(txtInstructorEmail.Text);
+                valid = IsEmailValid(txtInstructorEmail.Text);
             }
 
 
             return valid;
         }
-        private bool ValidateEmail(string email)
+        private bool IsEmailValid(string email)
         {
             try
             {

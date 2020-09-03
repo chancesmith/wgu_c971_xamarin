@@ -19,7 +19,7 @@ namespace wguterms
         public List<Assessment> assessments = new List<Assessment>();
         public MainPage main;
 
-        bool isFirstPass = true;
+        bool isInitRound = true;
 
         public MainPage()
         {
@@ -32,42 +32,44 @@ namespace wguterms
         {
 
             
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                con.CreateTable<Term>();
-                con.CreateTable<Course>();
-                con.CreateTable<Assessment>();
+                conn.CreateTable<Term>();
+                conn.CreateTable<Course>();
+                conn.CreateTable<Assessment>();
 
-                terms = con.Table<Term>().ToList();
+                terms = conn.Table<Term>().ToList();
             }
-            if (terms.Any() && isFirstPass)
+            if (terms.Any() && isInitRound)
             {
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    con.DropTable<Assessment>();
-                    con.DropTable<Course>();
-                    con.DropTable<Term>();
+                    conn.DropTable<Assessment>();
+                    conn.DropTable<Course>();
+                    conn.DropTable<Term>();
 
-                    con.CreateTable<Term>();
-                    con.CreateTable<Course>();
-                    con.CreateTable<Assessment>();
+                    conn.CreateTable<Term>();
+                    conn.CreateTable<Course>();
+                    conn.CreateTable<Assessment>();
 
-                    CreateEvaluationData(1);
+                    SeedAppWithData(1);
+                    SeedAppWithData(2);
                 }
-                isFirstPass = false;
+                isInitRound = false;
                 RunAlerts();
             }
-            else if (isFirstPass)
+            else if (isInitRound)
             {
 
-                CreateEvaluationData(1);
+                SeedAppWithData(1);
+                SeedAppWithData(2);
 
-                isFirstPass = false;
+                isInitRound = false;
                 RunAlerts();
             }
-            using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+            using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
             {
-                terms = con.Table<Term>().ToList();
+                terms = conn.Table<Term>().ToList();
                 termsListView.ItemsSource = terms;
             }
 
@@ -78,29 +80,30 @@ namespace wguterms
         {
             foreach (Term t in terms)
             {
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    var courses = con.Query<Course>($"SELECT * FROM Courses WHERE Term = '{t.Id}'");
-                    foreach (Course c in courses)
+                    var courses = conn.Query<Course>($"SELECT * FROM Courses WHERE Term = '{t.Id}'");
+                    foreach (Course course in courses)
                     {
-                        // check for courses starting within 3 days
-                        if ((c.Start - DateTime.Now).TotalDays < 3 && c.GetNotified == 1)
+                        var isCourseStartingInThreeDays = (course.Start - DateTime.Now).TotalDays < 3;
+                        if (isCourseStartingInThreeDays && course.GetNotified == 1)
                         {
-                            CrossLocalNotifications.Current.Show("Course Starting Soon", $"{c.CourseName} is starting on {c.Start.Date.ToString()}");
-                        }
-                        // check for courses ending within 7 days
-                        if ((c.End - DateTime.Now).TotalDays < 7 && c.GetNotified == 1)
-                        {
-                            CrossLocalNotifications.Current.Show("Course Ending Soon", $"{c.CourseName} is ending on {c.End.Date.ToString()}");
+                            CrossLocalNotifications.Current.Show("New Course Starting:", $"{course.CourseName} is starting on {course.Start.Date}");
                         }
 
-                        // check for assessments that are coming up within 3 days
-                        var assessments = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{c.Id}'");
+                        var isCourseEndingInSevenDays = (course.End - DateTime.Now).TotalDays < 7;
+                        if (isCourseEndingInSevenDays && course.GetNotified == 1)
+                        {
+                            CrossLocalNotifications.Current.Show("Current Course Ending: ", $"{course.CourseName} is ending on {course.End.Date}");
+                        }
+
+                        var assessments = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{course.Id}'");
                         foreach (Assessment a in assessments)
                         {
-                            if ((a.End - DateTime.Now).TotalDays < 3 && a.GetNotified == 1)
+                            var isAssmntStartingInThreeDays = (a.End - DateTime.Now).TotalDays < 3;
+                            if (isAssmntStartingInThreeDays && a.GetNotified == 1)
                             {
-                                CrossLocalNotifications.Current.Show("Assessment Due Soon", $"{a.AssessmentName} is starting on {a.End.Date.ToString()}");
+                                CrossLocalNotifications.Current.Show("Assessment Due: ", $"{a.AssessmentName} is starting on {a.End.Date}");
                             }
                         }
 
@@ -108,10 +111,9 @@ namespace wguterms
                 }
             }
         }
-        private void CreateEvaluationData(int termNumber)
+        private void SeedAppWithData(int termNumber)
         {
-            //// EVALUATION DATA CREATION
-            //// SEED TERM----
+            //-// seed term
             Term newTerm = new Term();
             newTerm.TermName = "Term " + termNumber.ToString();
             newTerm.Start = new DateTime(2020, 09, 15);
@@ -121,7 +123,7 @@ namespace wguterms
                 conn.Insert(newTerm);
             }
 
-            //// SEED COURSE----
+            //-// seed course
             Course newCourse = new Course();
             newCourse.Term = newTerm.Id;
             newCourse.CourseName = "Intro To Programming";
@@ -138,7 +140,7 @@ namespace wguterms
                 conn.Insert(newCourse);
             }
 
-            //// SEED OBJECTIVE ASSESSMENT----
+            //-// seed obj assessment
             Assessment newObjectiveAssessment = new Assessment();
             newObjectiveAssessment.AssessmentName = "FOO1";
             newObjectiveAssessment.Start = new DateTime(2020, 09, 11);
@@ -151,7 +153,7 @@ namespace wguterms
                 conn.Insert(newObjectiveAssessment);
             }
 
-            //// SEED PERFORMANCE ASSESSMENT----
+            //-// seed perf assesssment
             Assessment newPerformanceAssessment = new Assessment();
             newPerformanceAssessment.AssessmentName = "BAR2";
             newPerformanceAssessment.Start = new DateTime(2020, 09, 11);

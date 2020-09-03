@@ -26,7 +26,7 @@ namespace wguterms
 
         async private void btnAddAssessment_Clicked(object sender, EventArgs e)
         {
-            if (ValidateUserInput())
+            if (IsUserInputValid())
             {
                 Assessment newAssessment = new Assessment();
                 newAssessment.AssessmentName = txtAssessmentName.Text;
@@ -35,19 +35,19 @@ namespace wguterms
                 newAssessment.GetNotified = pickerNotifications.SelectedIndex;
                 newAssessment.Course = _course.Id;
 
-                using (SQLiteConnection con = new SQLiteConnection(App.FilePath))
+                using (SQLiteConnection conn = new SQLiteConnection(App.FilePath))
                 {
-                    var objectiveCount = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Objective'");
-                    var performanceCount = con.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Performance'");
+                    var objectiveCount = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Objective'");
+                    var performanceCount = conn.Query<Assessment>($"SELECT * FROM Assessments WHERE Course = '{_course.Id}' AND AssessType = 'Performance'");
                     if (newAssessment.AssessType.ToString() == "Objective" && objectiveCount.Count == 0)
                     {
-                        con.Insert(newAssessment);
+                        conn.Insert(newAssessment);
                         _main.assessments.Add(newAssessment);
                         await Navigation.PopModalAsync();
                     }
                     else if (newAssessment.AssessType.ToString() == "Performance" && performanceCount.Count == 0)
                     {
-                        con.Insert(newAssessment);
+                        conn.Insert(newAssessment);
                         _main.assessments.Add(newAssessment);
                         await Navigation.PopModalAsync();
                     }
@@ -64,7 +64,7 @@ namespace wguterms
             }
         }
 
-        private bool ValidateUserInput()
+        private bool IsUserInputValid()
         {
             bool valid = true;
 
